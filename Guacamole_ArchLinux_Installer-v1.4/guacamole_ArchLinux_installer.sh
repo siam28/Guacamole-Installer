@@ -14,13 +14,13 @@ guac_version=0.9.7
 mysql_version=5.1.35
  
 mysql_username=root
-mysql_password=69350395
+mysql_password=password
  
 ssl_country=NL
 ssl_state=GR
 ssl_city=Groningen
 ssl_org=NForceIT
-ssl_certname=nfgateway.nforce-it.nl
+ssl_certname=gateway.nforce-it.nl
  
 #System Update
 #sudo pacman -Sy 
