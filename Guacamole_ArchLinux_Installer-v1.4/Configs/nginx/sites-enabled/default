@@ -1,0 +1,44 @@
+# Listening on Port 443 (SSL) to secure the traffice between Guacamole traffic and proxy requests to Tomcat8
+server {
+    listen 443 ssl;
+    server_name nfgateway.nforce-it.nl;
+
+# This part is for SSL config only
+    ssl on;
+    ssl_certificate      /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key  /etc/nginx/ssl/nginx.key;
+    ssl_session_cache shared:SSL:10m;
+    ssl_ciphers 'AES256+EECDH:AES256+EDH:!aNULL';
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    ssl_prefer_server_ciphers on;
+  # ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+# Found below settings to be performing best but it will work with your own
+    tcp_nodelay    on;
+    tcp_nopush     off;
+    sendfile       on;
+    client_body_buffer_size 10K;
+    client_header_buffer_size 1k;
+    client_max_body_size 8m;
+    large_client_header_buffers 2 1k;
+    client_body_timeout 12;
+    client_header_timeout 12;
+    keepalive_timeout 15;
+    send_timeout 10;
+
+# Hosting Guacamole on the local server
+    location /guacamole/ {
+            proxy_pass http://localhost:8080/guacamole/;
+	  # proxy_cookie_path /guacamole/ /;                 # Advised by someone from the dev team; worked fine without it too.
+            proxy_buffering off;
+            proxy_http_version 1.1;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Upgrade $http_upgrade;
+	    proxy_set_header Connection $http_connection;
+            access_log /var/log/nginx/guacamole-access.log;
+            error_log /var/log/nginx/guacamole-error.log;
+	    break;
+    }
+}
