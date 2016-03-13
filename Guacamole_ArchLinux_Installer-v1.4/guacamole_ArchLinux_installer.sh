@@ -122,7 +122,7 @@ mysql-hostname: localhost
 mysql-port: 3306
 mysql-database: guacamole
 mysql-username: guacamole
-mysql-password: greenrt
+mysql-password: nforceit
  
 lib-directory: /var/lib/guacamole/classpath
 EOF1
